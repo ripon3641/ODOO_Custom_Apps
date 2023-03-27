@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <menuitem id="casting_schedule_root"
+              name="Casting Schedule"
+              web_icon="Casting_Schedule,static/src/pic/icon.png"
+              sequence="0"/>
+    <menuitem id="casting_schedule_master"
+              name="Casting Schedule"
+              parent="casting_schedule_root"
+              sequence="1"/>
+
+</odoo>

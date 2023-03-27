@@ -1,0 +1,179 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<odoo>
+    <record id="seq_loan_apply" model="ir.sequence">
+        <field name="name">Loan Application Sequence</field>
+        <field name="code">loan.management</field>
+        <field name="prefix">Loan -</field>
+        <field name="padding">5</field>
+        <field name="company_id" eval="False"/>
+    </record>
+    <record id="view_loan_management_tree" model="ir.ui.view">
+        <field name="name">loan.management.tree</field>
+        <field name="model">loan.management</field>
+        <field name="arch" type="xml">
+            <tree>
+                <field name="reference_no"/>
+                <field name="bank_name"/>
+                <field name="loan_type" optional="show"/>
+                <field name="apply_date" optional="show"/>
+                <field name="interest_rate" optional="show"/>
+                <field name="loan_tenure" optional="show"/>
+                <field name="loan_approve_date" optional="show"/>
+                <field name="loan_approve_amount" optional="show" sum="Total"/>
+                <field name="interest_amount" optional="show" sum="Total"/>
+                <field name="number_of_installment" optional="hide"/>
+                <field name="monthly_installment" optional="show"/>
+                <field name="settled_amount" optional="show" sum="Total"/>
+                <field name="remaining_amount" optional="show" sum="Total"/>
+                <field name="state" optional="show"/>
+            </tree>
+        </field>
+    </record>
+    <record id="view_loan_management_form" model="ir.ui.view">
+        <field name="name">loan.management.form</field>
+        <field name="model">loan.management</field>
+        <field name="arch" type="xml">
+            <form>
+                <header>
+                    <button name="button_submit"
+                            class="oe_highlight"
+                            string="Submit"
+                            states="draft"
+                            type="object"/>
+                    <button name="button_approve"
+                            class="oe_highlight"
+                            string="Approved"
+                            states="submit"
+                            type="object"/>
+                    <button name="button_disbursement"
+                            class="oe_highlight"
+                            string="Disbursement"
+                            states="approved"
+                            type="object"/>
+                    <button name="button_cancel"
+                            string="Cancel"
+                            type="object"
+                            states="draft,submit,approved"
+                            confirm="Are you sure want to cancel the Cheque?"/>
+                    <button name="button_reset_to_draft"
+                            string="Reset to Draft"
+                            states="cancel"
+                            type="object"
+                            help="Clink on to reset the Cheque"/>
+                    <field name="state"
+                           widget="statusbar"
+                           nolebel="1"
+                           statusbar_visible="draft,submit,approved,disbursement,cancel"/>
+                </header>
+                <sheet>
+                    <div class="oe_button_box" name="button_box">
+                        <button type="object" name="action_view_installments" class="oe_stat_button"
+                                icon="fa-list" context="{'default_loan_ref_no': id}">
+                            <field name="total_installments" widget="statinfo" string="Installments"/>
+                        </button>
+                    </div>
+
+                    <div class="oe_title">
+                        <h1>
+                            <field name="reference_no"/>
+                        </h1>
+                    </div>
+                    <group>
+                        <group>
+                            <field name="is_readonly" invisible="1" />
+                            <field name="bank_name" attrs="{'readonly': [('is_readonly', '=', True)]}" />
+                            <field name="loan_reference" attrs="{'readonly': [('is_readonly', '=', True)]}" />
+                            <field name="loan_type" attrs="{'readonly': [('is_readonly', '=', True)]}" />
+                            <field name="apply_date" attrs="{'readonly': [('is_readonly', '=', True)]}" />
+                            <field name="apply_amount" attrs="{'readonly': [('is_readonly', '=', True)]}" />
+                            <field name="interest_rate" attrs="{'readonly': [('is_readonly', '=', True)]}" />
+                            <field name="loan_tenure" attrs="{'readonly': [('is_readonly', '=', True)]}" />
+                            <field name="number_of_installment" />
+                            <field name="first_installment_date" attrs="{'readonly': [('is_readonly', '=', True)]}" />
+                        </group>
+                        <group>
+                            <field name="company_id"/>
+                            <field name="loan_approve_date" attrs="{'readonly': [('is_readonly', '=', True)]}" />
+                            <field name="loan_approve_amount" attrs="{'readonly': [('is_readonly', '=', True)]}" />
+                            <field name="interest_amount"/>
+                            <field name="total_amount" />
+                            <field name="monthly_installment"/>
+                            <field name="settled_amount"/>
+                            <field name="remaining_amount"/>
+                            <field name="next_payment_date" invisible="1" />
+                            <field name="base_value_installment" invisible="1" />
+                            <field name="interest_value_installment" invisible="1" />
+                            <field name="installment_ids" invisible="1" />
+                            <field name="total_installments" invisible="1" />
+                        </group>
+                    </group>
+                    <notebook>
+                        <page string="Disbursement Information">
+                            <group>
+                                <group>
+                                    <field name="journal_id" attrs="{'readonly': [('is_readonly', '=', True)]}" />
+                                    <field name="loan_account" attrs="{'readonly': [('is_readonly', '=', True)]}" />
+                                    <field name="expense_account" attrs="{'readonly': [('is_readonly', '=', True)]}" />
+                                </group>
+                                <group>
+                                    <field name="disbursement_date" attrs="{'readonly': [('is_readonly', '=', True)]}" />
+                                    <field name="disbursement_amount"/>
+                                    <field name="journal_entry_id"/>
+                                </group>
+                            </group>
+                        </page>
+                        <page string="Note"
+                              nane="note">
+                            <field name="note"
+                                   placeholder="Enter Note Here"
+                                   optional="{'resizable': true, 'collaborative': true}"/>
+                        </page>
+                    </notebook>
+                </sheet>
+                <!--Chatter-->
+                <diV class="oe_chatter">
+                    <field name="message_follower_ids"
+                           group="base.group_user"/>
+                    <field name="activity_ids"/>
+                    <field name="message_ids"/>
+                </diV>
+            </form>
+        </field>
+    </record>
+    <record id="view_loan_management_search" model="ir.ui.view">
+        <field name="name">loan.management.search</field>
+        <field name="model">loan.management</field>
+        <field name="arch" type="xml">
+            <search>
+                <field name="reference_no" string="Serial No"/>
+                <field name="bank_name" string="Bank Name"/>
+                <filter name="filter_draft" string="Draft" domain="[('state','=','draft')]"/>
+                <filter name="filter_submit" string="Submit" domain="[('state','=','submit')]"/>
+                <filter name="filter_approved" string="Approved" domain="[('state','=','approved')]"/>
+                <group expand="1" string="Group By">
+                    <filter string="Status" name="group_by_status" context="{'group_by': 'state'}"/>
+                    <filter string="Bank" name="group_by_bank" context="{'group_by': 'bank_name'}"/>
+                    <filter string="Loan Type" name="group_by_loantype" context="{'group_by': 'loan_type'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+    <record id="action_loan_management" model="ir.actions.act_window">
+        <field name="name">Loan Management</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">loan.management</field>
+        <field name="view_mode">tree,form</field>
+        <field name="context">{}</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                Add a new Documents here
+            </p>
+        </field>
+    </record>
+    <menuitem id="loan_management"
+              name="Loan Management"
+              action="action_loan_management"
+              parent="loan_management_master"
+              sequence="10"/>
+</odoo>

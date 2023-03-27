@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<odoo>
+    <record id="seq_loan_installment" model="ir.sequence">
+        <field name="name">Loan Installment Sequence</field>
+        <field name="code">loan.installment</field>
+        <field name="prefix">Inst-</field>
+        <field name="padding">5</field>
+        <field name="company_id" eval="False"/>
+    </record>
+    <record id="view_loan_installment_tree" model="ir.ui.view">
+        <field name="name">loan.installment.tree</field>
+        <field name="model">loan.installment</field>
+        <field name="arch" type="xml">
+            <tree>
+                <field name="installment_no"/>
+                <field name="loan_ref_no" optional="show"/>
+                <field name="installment_date"/>
+                <field name="base_value" sum="Total" optional="show"/>
+                <field name="interest_value" sum="Total" optional="show"/>
+                <field name="installment_amount" sum="Total"/>
+                <field name="state" optional="show"/>
+            </tree>
+        </field>
+    </record>
+    <record id="view_loan_installment_form" model="ir.ui.view">
+        <field name="name">loan.installment.form</field>
+        <field name="model">loan.installment</field>
+        <field name="arch" type="xml">
+            <form>
+                <header>
+                    <button name="button_paid"
+                            class="oe_highlight"
+                            string="PAID"
+                            states="unpaid"
+                            type="object"/>
+                    <button name="button_cancel"
+                            string="Cancel"
+                            type="object"
+                            states="unpaid"
+                            confirm="Are you sure want to cancel the Cheque?"/>
+                    <button name="button_reset_to_draft"
+                            string="Reset to Draft"
+                            states="cancel"
+                            type="object"
+                            help="Clink on to reset the Cheque"
+                            confirm="Are You Sure want to reset the Installment?"/>
+                    <field name="state"
+                           widget="statusbar"
+                           nolebel="1"
+                           statusbar_visible="unpaid,paid"/>
+                </header>
+                <sheet>
+                    <div class="oe_title">
+                        <h1>
+                            <field name="installment_no"/>
+                        </h1>
+                    </div>
+                    <group>
+                        <group>
+                            <field name="loan_ref_no" attrs="{'readonly': [('is_readonly', '=', True)]}" />
+                            <field name="installment_date" attrs="{'readonly': [('is_readonly', '=', True)]}" />
+                            <field name="journal_id" attrs="{'readonly': [('is_readonly', '=', True)]}" />
+                            <field name="loan_account"/>
+                            <field name="expense_account" attrs="{'readonly': [('is_readonly', '=', True)]}" />
+                        </group>
+                        <group>
+                            <field name="installment_amount"/>
+                            <field name="base_value"/>
+                            <field name="interest_value"/>
+                            <field name="journal_entry_id"/>
+                            <field name="is_readonly" invisible="1"/>
+                        </group>
+                    </group>
+                </sheet>
+                 <!--Chatter-->
+                <diV class="oe_chatter">
+                    <field name="message_follower_ids"
+                           group="base.group_user"/>
+                    <field name="activity_ids"/>
+                    <field name="message_ids"/>
+                </diV>
+            </form>
+        </field>
+    </record>
+    <record id="view_loan_installment_search" model="ir.ui.view">
+        <field name="name">loan.installment.search</field>
+        <field name="model">loan.installment</field>
+        <field name="arch" type="xml">
+            <search>
+                <field name="installment_no" string="Installment No"/>
+                <field name="loan_ref_no" string="Loan Reference No"/>
+                <filter name="filter_unpaid" string="Unpaid" domain="[('state','=','unpaid')]"/>
+                <filter name="filter_paid" string="paid" domain="[('state','=','paid')]"/>
+                <group expand="1" string="Group By">
+                    <filter string="Status" name="group_by_status" context="{'group_by': 'state'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+    <record id="action_loan_installment" model="ir.actions.act_window">
+        <field name="name">Loan Installment</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">loan.installment</field>
+        <field name="view_mode">tree,form</field>
+        <field name="context">{}</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                Add a new Documents here
+            </p>
+        </field>
+    </record>
+    <menuitem id="loan_installment"
+              name="Loan Installment"
+              action="action_loan_installment"
+              parent="loan_management_master"
+              sequence="20"/>
+</odoo>

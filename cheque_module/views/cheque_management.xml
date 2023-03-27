@@ -1,0 +1,161 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="seq_receive_cheque" model="ir.sequence">
+        <field name="name">Receive Cheque Sequence</field>
+        <field name="code">cheque.management</field>
+        <field name="prefix">CHQ</field>
+        <field name="padding">5</field>
+        <field name="company_id" eval="False"/>
+    </record>
+    <record id="view_receive_cheque_tree" model="ir.ui.view">
+        <field name="name">cheque.management.tree</field>
+        <field name="model">cheque.management</field>
+        <field name="arch" type="xml">
+            <tree>
+                <field name="reference_no"/>
+                <field name="cheque_type" optional="show"/>
+                <field name="receive_date" optional="show"/>
+                <field name="party_name" optional="show"/>
+                <field name="cheque_no" optional="show"/>
+                <field name="cheque_date" optional="show"/>
+                <field name="cheque_status" optional="show"/>
+                <field name="amount" optional="show" sum="Total"/>
+                <field name="money_receipt_no" optional="show"/>
+                <field name="expire_date" optional="show"/>
+                <field name="responsible_name" optional="show"/>
+                <field name="zone" optional="show"/>
+                <field name="state" optional="show"/>
+            </tree>
+        </field>
+    </record>
+    <record id="view_receive_cheque_form" model="ir.ui.view">
+        <field name="name">cheque.management.form</field>
+        <field name="model">cheque.management</field>
+        <field name="arch" type="xml">
+            <form>
+                <header>
+                    <button name="button_clearing"
+                            class="oe_highlight"
+                            string="Clearing"
+                            type="object"/>
+                    <button name="button_honoured"
+                            class="oe_highlight"
+                            states="clearing"
+                            string="Honoured"
+                            type="object"/>
+                    <button name="button_dishonour1"
+                            class="oe_highlight"
+                            string="Dishonour-1"
+                            states="clearing"
+                            type="object"/>
+                    <button name="button_dishonour2"
+                            class="oe_highlight"
+                            states="clearing"
+                            string="Dishonour-2"
+                            type="object"/>
+                    <button name="button_dishonour3"
+                            class="oe_highlight"
+                            states="clearing"
+                            string="Dishonour-3"
+                            type="object"/>
+                    <button name="button_return"
+                            class="oe_highlight"
+                            string="Return"
+                            type="object"/>
+                    <button name="button_cancel"
+                            string="Cancel"
+                            type="object"
+                            confirm="Are you sure want to cancel the Cheque?"/>
+                    <button name="button_reset_to_draft"
+                            string="Reset to Draft"
+                            states="cancel"
+                            type="object"
+                            help="Clink on to reset the Cheque"/>
+
+                    <field name="state"
+                           widget="statusbar"
+                           nolebel="1"
+                           statusbar_visible="ready,clearing,honoured,cancel"/>
+                </header>
+                <sheet>
+                    <div class="oe_title">
+                        <h1>
+                            <field name="reference_no"/>
+                        </h1>
+                    </div>
+                    <group>
+                        <group>
+                            <field name="party_name"/>
+                            <field name="receive_date"/>
+                            <field name="cheque_type"/>
+                            <field name="cheque_no"/>
+                            <field name="cheque_date"/>
+                            <field name="cheque_status"/>
+                            <field name="bank_name"/>
+                            <field name="branch_name"/>
+                            <field name="expire_date"/>
+                        </group>
+                        <group>
+                            <field name="company_id" readonly="1"/>
+                            <field name="amount"/>
+                            <field name="money_receipt_no"/>
+                            <field name="responsible_name"/>
+                            <field name="zone"/>
+                            <field name="deposit_bank"/>
+                            <field name="deposit_date"/>
+                            <field name="deposit_branch"/>
+                            <field name="journal_entry_id"/>
+                        </group>
+                    </group>
+                    <group>
+                        <h2>Additional Information</h2>
+                        <field name="name"/>
+                        <field name="designation"/>
+                        <field name="Phone_no"/>
+                    </group>
+                </sheet>
+
+                <!--Chatter-->
+                <diV class="oe_chatter">
+                    <field name="message_follower_ids"
+                           group="base.group_user"/>
+                    <field name="activity_ids"/>
+                    <field name="message_ids"/>
+                </diV>
+            </form>
+        </field>
+    </record>
+    <record id="view_receive_cheque_search" model="ir.ui.view">
+        <field name="name">cheque.management.search</field>
+        <field name="model">cheque.management</field>
+        <field name="arch" type="xml">
+            <search>
+                <field name="reference_no" string="Serial No"/>
+                <field name="party_name" string="party Name"/>
+                <field name="cheque_no" string="Cheque No"/>
+                <filter name="filter_ready" string="Ready" domain="[('state','=','ready')]"/>
+                <filter name="filter_clearing" string="Clearing" domain="[('state','=','clearing')]"/>
+                <group expand="1" string="Group By">
+                    <filter string="Status" name="group_by_status" context="{'group_by': 'state'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+    <record id="action_receive_cheque" model="ir.actions.act_window">
+        <field name="name">Receive Cheque</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">cheque.management</field>
+        <field name="view_mode">tree,form</field>
+        <field name="context">{}</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                Add a new Cheque here
+            </p>
+        </field>
+    </record>
+    <menuitem id="receive_cheque"
+              name="Receive Cheque"
+              action="action_receive_cheque"
+              parent="receive_cheque_management"
+              sequence="10"/>
+</odoo>

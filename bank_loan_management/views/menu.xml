@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <menuitem id="loan_management_root"
+              name="Bank Loan"
+              web_icon="bank_loan_management,static/icon.png"
+              sequence="0"/>
+    <menuitem id="loan_management_master"
+              name="Loan Management"
+              parent="loan_management_root"
+              sequence="10"/>
+    <menuitem id="loan_configurations"
+              name="Configurations"
+              parent="loan_management_root"
+              sequence="20"/>
+</odoo>

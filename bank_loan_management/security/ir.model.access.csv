@@ -1,0 +1,5 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access.bank.configuration,access_bank_configuration,bank_loan_management.model_bank_configuration,base.group_user,1,1,1,1
+access.loan.management,access_loan_management,bank_loan_management.model_loan_management,base.group_user,1,1,1,1
+access.loantype.config,access_loantype_config,bank_loan_management.model_loantype_config,base.group_user,1,1,1,1
+access.loan.installment,access_loan_installment,bank_loan_management.model_loan_installment,base.group_user,1,1,1,1

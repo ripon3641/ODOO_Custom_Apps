@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<odoo>
+    <menuitem id="product_create_root"
+              name="Product Create"
+              web_icon="new_product_create,static/icon.png"
+              sequence="0"/>
+    <menuitem id="product_create_master"
+              name="Product Create"
+              parent="product_create_root"
+              sequence="10"/>
+</odoo>

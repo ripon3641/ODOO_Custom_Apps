@@ -1,0 +1,4 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access.cheque.management,access_cheque_management,cheque_module.model_cheque_management,base.group_user,1,1,1,1
+access.payment.cheque,access_payment_cheque,cheque_module.model_payment_cheque,base.group_user,1,1,1,1
+access.cheque.configuration,access_cheque_configuration,cheque_module.model_cheque_configuration,base.group_user,1,1,1,1

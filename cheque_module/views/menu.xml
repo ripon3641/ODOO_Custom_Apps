@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <menuitem id="cheque_management_root"
+              name="Cheque Management"
+              web_icon="cheque_module,static/description/icon.png"
+              sequence="0"/>
+    <menuitem id="receive_cheque_management"
+              name="Receive Cheque"
+              parent="cheque_management_root"
+              sequence="10"/>
+    <menuitem id="payment_cheque_management"
+              name="Payment Cheque"
+              parent="cheque_management_root"
+              sequence="20"/>
+    <menuitem id="Cheque_Config"
+              name="Configurations"
+              parent="cheque_management_root"
+              sequence="30"/>
+
+</odoo>

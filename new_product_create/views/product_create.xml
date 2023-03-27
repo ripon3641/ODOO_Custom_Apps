@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<odoo>
+    <record id="seq_new_product_create_request" model="ir.sequence">
+        <field name="name">New Product Create Sequence</field>
+        <field name="code">product.create</field>
+        <field name="prefix">SL</field>
+        <field name="padding">5</field>
+        <field name="company_id" eval="False"/>
+    </record>
+    <record id="view_product_create_tree" model="ir.ui.view">
+        <field name="name">product.create.tree</field>
+        <field name="model">product.create</field>
+        <field name="arch" type="xml">
+            <tree>
+                <field name="reference_no"/>
+                <field name="product_category"/>
+                <field name="product_name"/>
+                <field name="uom_ids"/>
+                <field name="product_attribute"/>
+                <field name="state"/>
+            </tree>
+        </field>
+    </record>
+    <record id="view_product_create_form" model="ir.ui.view">
+        <field name="name">product.create.form</field>
+        <field name="model">product.create</field>
+        <field name="arch" type="xml">
+            <form>
+
+                <header>
+                    <button name="button_confirm"
+                            class="oe_highlight"
+                            string="Confirm"
+                            states="draft"
+                            type="object"/>
+                    <button name="button_approved"
+                            class="oe_highlight"
+                            string="Approved"
+                            states="confirm"
+                            type="object"/>
+                    <button name="button_validate"
+                            class="oe_highlight"
+                            string="Validate"
+                            states="approved"
+                            type="object"/>
+                    <button name="button_cancel"
+                            string="Cancel"
+                            type="object"
+                            states="draft,confirm,approved"
+                            confirm="Are you sure want to cancel the Cheque?"/>
+                    <button name="button_reset_to_draft"
+                            string="Reset to Draft"
+                            states="cancel"
+                            type="object"
+                            help="Clink on to reset the Cheque"/>
+                    <field name="state"
+                           widget="statusbar"
+                           nolebel="1"
+                           statusbar_visible="draft,confirm,approved,validate"/>
+                </header>
+                <sheet>
+                    <group>
+                        <div class="oe_title">
+                            <h1>
+                                <field name="reference_no"/>
+                            </h1>
+                        </div>
+                    </group>
+                    <group>
+                        <group>
+                            <field name="product_category"/>
+                            <field name="product_name"/>
+                            <field name="uom_ids"/>
+                        </group>
+                        <group>
+                            <field name="company_id"/>
+                            <field name="product_attribute"/>
+                            <field name="attribute_value"/>
+                        </group>
+                    </group>
+                </sheet>
+                <!--Chatter-->
+                <diV class="oe_chatter">
+                    <field name="message_follower_ids"
+                           group="base.group_user"/>
+                    <field name="activity_ids"/>
+                    <field name="message_ids"/>
+                </diV>
+            </form>
+        </field>
+    </record>
+    <record id="action_product_create" model="ir.actions.act_window">
+        <field name="name">Product Create</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">product.create</field>
+        <field name="view_mode">tree,form</field>
+        <field name="context">{}</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                Add a New Document here
+            </p>
+        </field>
+    </record>
+    <menuitem id="product_create"
+              name="Product Create"
+              action="action_product_create"
+              parent="product_create_master"
+              sequence="10"/>
+</odoo>

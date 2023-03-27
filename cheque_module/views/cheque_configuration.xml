@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_cheque_config_tree" model="ir.ui.view">
+        <field name="name">cheque.configuration.tree</field>
+        <field name="model">cheque.configuration</field>
+        <field name="arch" type="xml">
+            <tree>
+                <field name="bank_name"/>
+                <field name="active" widget="boolean_toggle"/>
+            </tree>
+        </field>
+    </record>
+    <record id="view_cheque_config_form" model="ir.ui.view">
+        <field name="name">cheque.configuration.form</field>
+        <field name="model">cheque.configuration</field>
+        <field name="arch" type="xml">
+            <form>
+                <sheet>
+                    <group>
+                        <group>
+                            <field name="bank_name"/>
+                        </group>
+                        <group>
+                            <field name="active" widget="boolean_toggle"/>
+                        </group>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+    <record id="action_cheque_config" model="ir.actions.act_window">
+        <field name="name">Cheque Configuration</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">cheque.configuration</field>
+        <field name="view_mode">tree,form</field>
+        <field name="context">{}</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                Add a new items
+            </p>
+        </field>
+    </record>
+    <menuitem id="menu_bank_config"
+              name="Bank Configurations"
+              action="action_cheque_config"
+              parent="Cheque_Config"
+              sequence="0"/>
+</odoo>
